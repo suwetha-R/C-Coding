@@ -1,0 +1,165 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+struct Record
+{
+    int roll;
+    char name[20];
+    int mark[10];
+};
+int main()
+{
+    int num,sub;
+    printf("Enter the number of student :");
+    scanf("%d",&num);
+    printf("Enter the number of subjects :");
+    scanf("%d",&sub);
+    struct Record student[num];
+    char (*arr)[30];
+    arr=malloc(num*sizeof(char *));
+    for(int i=0;i<sub;i++)
+    {
+        getchar();
+        printf("Enter the subject %d :",i+1);
+        scanf("%s",arr[i]);
+    }
+    for(int i=0;i<num;i++)
+    {
+        printf("-------Enter the student details------\n");
+        printf("Enter student %d Roll no :",i+1);
+        scanf("%d",&student[i].roll);
+        printf("Enter student %d name :",i+1);
+        scanf(" %s",student[i].name);
+        for(int j=0;j<sub;j++)
+        {
+            printf("enter %s mark :",arr[j]);
+            scanf("%d",&student[i].mark[j]);
+        }
+    }
+    char ch='y';
+    while(ch == 'y' || ch == 'Y')
+    {
+        printf("----Display Menu-----\n");
+        printf("1.All the student details\n2.Particular stident details\n");
+        int choice;
+        printf("Choice --->");
+        scanf("%d",&choice);
+        float avg[num];
+        for(int i=0;i<num;i++)
+        {
+            int sum=0;
+            for(int j=0;j<sub;j++)
+            {
+                sum=sum+student[i].mark[j];
+            }
+            float average=(float)sum/sub;
+            avg[i]=average;
+        }
+        char grade[10];
+        for(int i=0;i<num;i++)
+        {
+            if(avg[i] >= 90)
+            {
+                grade[i]='A';
+            }
+            else if(avg[i] >=75 && avg[i] < 90)
+            {
+                grade[i]='B';
+            }
+            else if(avg[i] >= 60 && avg[i] < 75)
+            {
+                grade[i]='C';
+            }
+            else if(avg[i] >= 45 && avg[i] < 60)
+            {
+                grade[i]='D';
+            }
+            else
+                grade[i]='E';
+        }
+
+        if(choice == 1)
+        {
+            printf("%-10s%-10s","Roll no","Name");
+            for(int i=0;i<sub;i++)
+            {
+                printf("%-10s",arr[i]);
+            }
+            printf("%-10s%-10s","Average","Grade");
+            printf("\n");
+            for(int i=0;i<num;i++)
+            {
+                printf("%-10d%-10s",student[i].roll,student[i].name);
+                for(int j=0;j<sub;j++)
+                {
+                    printf("%-10d",student[i].mark[j]);
+                }
+                printf("%-10g%-10c",avg[i],grade[i]);
+                printf("\n");
+            }
+        }
+        if(choice == 2)
+        {
+            printf("---Menu for particular Student---\n");
+            printf("1.Name\n2.Roll no.\n");
+            int choice1;
+            printf("Enter your choice :");
+            scanf("%d",&choice1);
+            if(choice1 == 1)
+            {
+                printf("Enter the name of the student :");
+                char name1[10];
+                scanf("%s",name1);
+                printf("%-10s%-10s","Roll no","Name");
+                for(int i=0;i<sub;i++)
+                {
+                    printf("%-10s",arr[i]);
+                }
+                printf("%-10s%-10s","Average","Grade");
+                printf("\n");
+                for(int i=0;i<num;i++)
+                {
+                    int ret=strcmp(name1,student[i].name);
+                    if(ret == 0)
+                    {
+                        printf("%-10d",student[i].roll);
+                        printf("%-10s",name1);
+                        for(int j=0;j<sub;j++)
+                        {
+                            printf("%-10d",student[i].mark[j]);
+                        }
+                        printf("%-10g%-10c",avg[i],grade[i]);
+                        printf("\n");
+                    }
+                }
+            }
+            if(choice1 == 2)
+            {
+                printf("Enter the Roll number :");
+                int no;
+                scanf("%d",&no);
+                if(no <= num)
+                {
+                    printf("%-10s%-10s","Roll no","Name");
+                    for(int i=0;i<sub;i++)
+                    {
+                        printf("%-10s",arr[i]);
+                    }
+                    printf("%-10s%-10s","Average","Grade");
+                    printf("\n");
+                    printf("%-10d%-10s",student[no-1].roll,student[no-1].name);
+                    for(int j=0;j<sub;j++)
+                    {
+                        printf("%-10d",student[no-1].mark[j]);
+                    }
+                    printf("%-10g%-10c",avg[no-1],grade[no-1]);
+                    printf("\n");
+                }
+                else
+                    printf("Error : Invalid roll number\n");
+            }
+        }
+        printf("Do you want to continue :");
+        scanf(" %c",&ch);
+    }
+}
